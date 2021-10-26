@@ -1,48 +1,46 @@
 # MVC_PHP
 
- Ajouter des commentaires
-Bon, maintenant qu'on a réorganisé pas mal notre code, reprenons un peu la pratique. Cette fois, on aimerait permettre aux lecteurs d'ajouter des commentaires sur les billets. Que faut-il faire ?
+Gérer les erreurs
+La gestion des erreurs est un sujet important en programmation. Il y a souvent des erreurs et il faut savoir vivre avec. Mais comment faire ça bien ? 🤔
 
-Vous devriez commencer à avoir l'habitude. Ce sera une bonne occasion de pratiquer ! On va faire les choses dans cet ordre :
+Si vous vous souvenez de notre routeur, il contient beaucoup de  if .On fait des tests et on affiche des erreurs à chaque fois qu'il y a un problème :
 
-Écrire le modèle (et créer au besoin des tables en base).
+ - Les exceptions à la rescousse
+Les exceptions sont un moyen en programmation de gérer les erreurs. Vous en avez peut-être déjà vu dans du code PHP, ça ressemble à ça :
 
-Écrire le contrôleur, pour récupérer les informations et les envoyer à la vue.
+<?php
+try {
+    // Essayer de faire quelque chose
+}
+catch(Exception $e) {
+    // Si une erreur se produit, on arrive ici
+}
+En premier lieu, l'ordinateur essaie d'exécuter les instructions qui se trouvent dans le bloc  try  ("essayer" en anglais). Deux possibilités :
 
-Écrire la vue, pour afficher les informations.
+Soit il ne se passe aucune erreur dans le bloc  try  : dans ce cas, on saute le bloc  catch  et on passe à la suite du code.
 
-Mettre à jour le routeur, pour envoyer vers le bon contrôleur.
+Soit une erreur se produit dans le bloc  try  : on arrête ce qu'on faisait et on va directement dans le  catch  (pour "attraper" l'erreur).
 
- - Écriture du modèle
-Il suffit d'ajouter une petite fonction  postComment  dans  model/frontend.php  qui ajoute un commentaire en base :
-Rien de bien sorcier. Il faut juste penser à récupérer en paramètres les informations dont on a besoin :
+C'est par exemple ce qu'on fait ici pour se connecter à la base de données :
 
-L'ID du billet auquel se rapporte le commentaire
+<?php
 
-Le nom de l'auteur
+// Code avant
 
-Le contenu du commentaire
+try {
+    $db = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root');
+}
+catch(Exception $e) {
+    die('Erreur : '.$e->getMessage());
+}
 
-Le reste des informations (l'ID du commentaire, la date) sera généré automatiquement.
+// Code après
+On essaie de se connecter à la base de données dans le bloc  try . Si tout va bien, on continue (on va dans le "Code après"). Si en revanche il y a un souci lors de la connexion (à l'intérieur du  new PDO  ), alors on récupère l'erreur dans le bloc catch.
 
- - Écriture du contrôleur
-Le contrôleur  controller/frontend.php  récupère lui aussi les informations dont on a besoin (id du billet, auteur, commentaire) et les transmet au modèle :
-Vous noterez qu'on teste le retour de la requête. Normalement, celle-ci renvoie le nombre de lignes impactées par la requête ou "false" s'il y a eu une erreur. On teste donc s'il y a eu une erreur, et on arrête tout (avec un  die  ) si jamais il y a eu un souci.
+On peut afficher l'erreur qui nous a été envoyée avec  $e->getMessage()  .
 
-Si tout va bien, il n'y a aucune page à afficher. Les données ont été insérées, on redirige donc le visiteur vers la page du billet pour qu'il puisse voir son beau commentaire qui vient d'être inséré ! 
+Pour générer une erreur, il faut "jeter une exception" (oui, on dit ça 😂 ). Dès qu'il y a une erreur quelque part dans votre code, dans une fonction par exemple, vous utiliserez cette ligne :
 
- - Mise à jour de la vue
-Il faut aussi modifier un peu la vue qui affiche un billet et ses commentaires (  view/frontend/postView.php  ). En effet, nous devons ajouter le formulaire pour pouvoir envoyer des commentaires !
-Rien de spécial, c'est un formulaire quoi. 😅
-
-Il faut juste bien écrire l'URL vers laquelle le formulaire est censé envoyer. Ici, vous voyez que j'envoie vers une action addComment. Hum... ça me fait penser qu'on n'a pas encore écrit le routeur qui appelle le contrôleur ! 
-
- - Mise à jour du routeur
-Bon on y est presque. Ajoutons un elseif dans notre routeur (  index.php  ) pour appeler le nouveau contrôleur  addComment  qu'on vient de créer, et on devrait avoir tout bon !
-
-Ouah ! Eh, il devient dur à lire ce routeur non ?
-
-C'est vrai qu'avec tous ces if imbriqués, ça commence à faire beaucoup... mais il n'y a pas trop le choix. Ceci dit, il y a une meilleure façon de gérer les erreurs, on va en reparler dans un prochain chapitre. 
-
-Comme vous pouvez le voir, je teste si on a bien un ID de billet, mais aussi si un nom d'auteur et un message ont bien été envoyés. Si c'est le cas, j'appelle le contrôleur  addComment  , qui appelle le modèle pour enregistrer les informations en base. Ah, c'est beau quand tout est bien organisé ! 
-.
+<?php
+throw new Exception('Message d\'erreur à transmettre');
+On va utiliser ce mécanisme dans notre code !
