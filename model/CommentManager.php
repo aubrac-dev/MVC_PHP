@@ -21,7 +21,7 @@ class CommentManager
 
     private function dbConnect()
     {
-        $db = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'dbuser', '');
+        $db = new PDO('mysql:host=localhost;dbname=blog;charset=utf8', 'dbuser', '');
         return $db;
     }
 }
