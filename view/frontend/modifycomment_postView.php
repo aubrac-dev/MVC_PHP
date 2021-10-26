@@ -36,10 +36,38 @@ while ($comment = $comments->fetch()) {
 ?>
     <p>
         <strong><?= htmlspecialchars($comment['author']) ?></strong> le <?= $comment['comment_date_fr'] ?>
-        <em>(<a href="index.php?action=postmodifycomment&amp;commentId=<?= $comment['id'] ?>&amp;id=<?= $post['id'] ?>">modifier</a>)</em>
+        <?php
+        if ($comment['id'] == $commentId) {
+            $modifythiscomment = true;
+        } else {
+            $modifythiscomment = false;
+        ?>
+            <em>(<a href="index.php?action=postmodifycomment&amp;commentId=<?= $comment['id'] ?>&amp;id=<?= $post['id'] ?>">modifier</a>)</em>
+        <?php
+        }
+        ?>
     </p>
     <p><?= nl2br(htmlspecialchars($comment['comment'])) ?></p>
+    <?php
+    if ($modifythiscomment) {
+    ?>
+        <h2>Modification du commentaire</h2>
+
+        <form action="index.php?action=modifyComment&amp;commentId=<?= $comment['id'] ?>&amp;id=<?= $post['id'] ?>" method="post">
+            <div>
+                <label for="authorModify">L'auteur qui modifie</label><br />
+                <input type="text" id="authorModify" name="authorModify" autofocus />
+            </div>
+            <div>
+                <label for="commentModify">Commentaire modifié</label><br />
+                <textarea id="commentModify" name="commentModify"></textarea>
+            </div>
+            <div>
+                <input type="submit" />
+            </div>
+        </form>
 <?php
+    }
 }
 ?>
 <?php $content = ob_get_clean(); ?>

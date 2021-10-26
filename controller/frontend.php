@@ -23,6 +23,18 @@ function post()
     require('view/frontend/postView.php');
 }
 
+function modifycomment_post()
+{
+    $postManager = new \OpenClassrooms\Blog\Model\PostManager();
+    $commentManager = new \OpenClassrooms\Blog\Model\CommentManager();
+
+    $post = $postManager->getPost($_GET['id']);
+    $comments = $commentManager->getComments($_GET['id']);
+    $commentId = $_GET['commentId'];
+
+    require('view/frontend/modifycomment_postView.php');
+}
+
 function addComment($postId, $author, $comment)
 {
     $commentManager = new \OpenClassrooms\Blog\Model\CommentManager();
@@ -31,8 +43,20 @@ function addComment($postId, $author, $comment)
 
     if ($affectedLines === false) {
         throw new Exception('Impossible d\'ajouter le commentaire !');
+    } else {
+        header('Location: index.php?action=post&id=' . $postId);
     }
-    else {
+}
+
+function modifyComment($postId, $author, $comment, $commentId)
+{
+    $CommentManager = new \OpenClassrooms\Blog\Model\CommentManager();
+
+    $affectedLines = $CommentManager->updateComment($postId, $author, $comment, $commentId);
+    // echo (' postId = ' . $postId . ' author = ' . $author . ' comment = ' . $comment . ' commentId = ' . $commentId);
+    if ($affectedLines === false) {
+        throw new Exception('Impossible de modifier le commentaire !');
+    } else {
         header('Location: index.php?action=post&id=' . $postId);
     }
 }
