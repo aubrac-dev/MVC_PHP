@@ -15,8 +15,8 @@
 
 
 
-CREATE DATABASE test;
-USE test;
+CREATE DATABASE blog;
+USE blog;
 
 -- phpMyAdmin SQL Dump
 -- version 4.7.2
