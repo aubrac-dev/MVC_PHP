@@ -45,3 +45,4 @@ Ouah ! Eh, il devient dur à lire ce routeur non ?
 C'est vrai qu'avec tous ces if imbriqués, ça commence à faire beaucoup... mais il n'y a pas trop le choix. Ceci dit, il y a une meilleure façon de gérer les erreurs, on va en reparler dans un prochain chapitre. 
 
 Comme vous pouvez le voir, je teste si on a bien un ID de billet, mais aussi si un nom d'auteur et un message ont bien été envoyés. Si c'est le cas, j'appelle le contrôleur  addComment  , qui appelle le modèle pour enregistrer les informations en base. Ah, c'est beau quand tout est bien organisé ! 
+.
