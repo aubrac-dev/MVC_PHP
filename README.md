@@ -16,3 +16,15 @@ index.php?action=post : va afficher un billet et ses commentaires.
 
 Certains trouvent que l'URL n'est plus très jolie sous cette forme. Peut-être préféreriez-vous voir monsite.com/listposts plutôt que index.php?action=listPosts.
 Heureusement, cela peut se régler avec un mécanisme de réécriture d'URL (URL rewriting). On ne l'abordera pas ici, car ça se fait dans la configuration du serveur web (Apache), mais vous pouvez vous renseigner sur le sujet si vous voulez !
+
+Intéressons-nous maintenant à notre routeur index.php :
+
+Il a l'air un peu compliqué parce qu'on y fait pas mal de tests, mais le principe est tout simple : appeler le bon contrôleur. Ça donne :
+
+On charge le fichier controller.php (pour que les fonctions soient en mémoire, quand même !).
+
+On teste le paramètre action pour savoir quel contrôleur appeler. Si le paramètre n'est pas présent, par défaut on charge la liste des derniers billets (ligne 18). C'est comme ça qu'on indique ce que doit afficher la page d'accueil du site.
+
+On teste les différentes valeurs possibles pour notre paramètre action et on redirige vers le bon contrôleur à chaque fois.
+
+Vous remarquerez que c'est dans le routeur qu'on teste la présence de l'id dans l'URL pour l'affichage d'un post (ligne 9). On aurait pu laisser ce test dans le contrôleur, mais c'est normalement le rôle du routeur de vérifier que tous les paramètres sont présents dans l'URL avant de charger le contrôleur.
