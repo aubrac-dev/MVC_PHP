@@ -1,4 +1,5 @@
 <?php
+// model/frontend.php  The model - db acces
 function getPosts()
 {
     $db = dbConnect();

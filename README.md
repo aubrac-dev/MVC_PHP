@@ -1,30 +1,39 @@
 # MVC_PHP
 
-MVC, la Programmation Orientée Objet (POO) 
+Créer les dossiers
+Je pense que ça serait bien d'adopter déjà au minimum l'organisation suivante, que l'on peut retrouver dans un certain nombre projets :
 
-On va travailler ici sur 2 fichiers :
+controller/ : le dossier qui contient nos contrôleurs.
 
-index.php : ce sera le nom de notre routeur. Le routeur étant le premier fichier qu'on appelle en général sur un site, c'est normal de le faire dans index.php. Il va se charger d'appeler le bon contrôleur.
+view/ : nos vues.
 
-controller.php : il contiendra nos contrôleurs dans des fonctions. On va y regrouper nos anciens index.php et post.php.
+model/ : notre modèle.
 
-On va faire passer un paramètre action  dans l'URL de notre routeur index.php pour savoir quelle page on veut appeler. Par exemple :
+public/ : tous nos fichiers statiques publics. On pourra y mettre à l'intérieur un dossier css/, images/, js/, etc.
 
-index.php?action=listPosts : va afficher la liste des billets.
+On retrouve aussi souvent un dossier appelé vendor/ dans lequel on place toutes les bibliothèques tierces (tout le code qui provient d'autres personnes).
 
-index.php?action=post : va afficher un billet et ses commentaires.
+Il ne restera en fait que le fichier index.php (notre routeur) à la racine... parce qu'il faut bien appeler un fichier à la base !
 
-Certains trouvent que l'URL n'est plus très jolie sous cette forme. Peut-être préféreriez-vous voir monsite.com/listposts plutôt que index.php?action=listPosts.
-Heureusement, cela peut se régler avec un mécanisme de réécriture d'URL (URL rewriting). On ne l'abordera pas ici, car ça se fait dans la configuration du serveur web (Apache), mais vous pouvez vous renseigner sur le sujet si vous voulez !
+Bien sûr, il faut mettre à jour un peu le code, notamment les require , pour que PHP retrouve bien les fichiers dans les bons dossiers !
 
-Intéressons-nous maintenant à notre routeur index.php :
+Vous noterez que  indexView.php  qui était à la racine a été déplacé et renommé  listPostsView.php  pour mieux décrire ce que fait cette vue.
 
-Il a l'air un peu compliqué parce qu'on y fait pas mal de tests, mais le principe est tout simple : appeler le bon contrôleur. Ça donne :
+Regrouper par sections du site
+Hum, mais c'est bizarre non d'avoir controller/controller.php et model/model.php ? 🤔
 
-On charge le fichier controller.php (pour que les fonctions soient en mémoire, quand même !).
+Vous commencez à avoir de bons réflexes, j'aime ça ! 😁
 
-On teste le paramètre action pour savoir quel contrôleur appeler. Si le paramètre n'est pas présent, par défaut on charge la liste des derniers billets (ligne 18). C'est comme ça qu'on indique ce que doit afficher la page d'accueil du site.
+En effet, c'est plutôt curieux de n'avoir qu'un seul fichier à l'intérieur pour le contrôleur et le modèle, surtout s'ils ont le même nom que le dossier. En fait, ça nous donne la place de nous étendre quand le site va grossir. L'idée sera de regrouper les contrôleurs, modèles (et même les vues) dans des sections, en fonction des différentes grandes "zones du site".
 
-On teste les différentes valeurs possibles pour notre paramètre action et on redirige vers le bon contrôleur à chaque fois.
+Si sur mon site j'ai un espace "blog", un espace "forum", un espace "members", je pourrais regrouper les fonctions dans des fichiers au nom de ces sections.
 
-Vous remarquerez que c'est dans le routeur qu'on teste la présence de l'id dans l'URL pour l'affichage d'un post (ligne 9). On aurait pu laisser ce test dans le contrôleur, mais c'est normalement le rôle du routeur de vérifier que tous les paramètres sont présents dans l'URL avant de charger le contrôleur.
+Pour notre blog, je vous propose un autre découpage :
+
+frontend : tout ce qui est côté utilisateur. Affichage des billets, ajout et liste des commentaires...
+
+backend : tout ce qui est pour les administrateurs. Création de billets, modération des commentaires...
+
+Pour l'instant, on n'a codé que le côté frontend, donc on n'aura qu'une section. Mais par la suite si votre site grossit, vous serez heureux de pouvoir un peu découper par section !
+
+Voilà ! Nous avons donc un modèle pour le frontend, un contrôleur pour le frontend, et plusieurs vues regroupées dans un dossier view/frontend !
