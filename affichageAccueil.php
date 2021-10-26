@@ -9,8 +9,7 @@
     <body>
         <h1>Mon super blog !</h1>
         <p>Derniers billets du blog :</p>
- 
-        
+   
         <?php
         while ($donnees = $req->fetch())
         {
