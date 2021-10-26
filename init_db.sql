@@ -88,6 +88,53 @@ ALTER TABLE `posts`
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
+
+--
+-- Structure de la table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `comment` text NOT NULL,
+  `comment_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `comments`
+--
+
+INSERT INTO `comments` (`id`, `post_id`, `author`, `comment`, `comment_date`) VALUES
+(1, 2, 'Mathieu', 'Preum\'s', '2017-09-24 17:12:30'),
+(2, 2, 'Sam', 'Quelqu\'un a un avis là-dessus ? Je ne sais pas quoi en penser.', '2017-09-24 17:21:34'),
+(8, 1, 'Jojo', 'C\'est moi !', '2017-09-28 19:50:14'),
+(9, 2, 'Mathieu', 'Retest\r\nEncore', '2017-10-27 11:46:50'),
+(10, 2, 'Sam', 'tu testes quoi ?', '2017-10-27 15:44:14');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+
 CREATE USER 'dbuser'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO 'dbuser'@'localhost';
 FLUSH PRIVILEGES;
+
+
