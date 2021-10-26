@@ -50,4 +50,4 @@ Oui, c'est vrai, c'était plus simple avant. Là, on peut le dire, il y a encore
 
 Il y a au moins un intérêt en tout cas : on a mieux découpé notre code. Il y a un fichier pour tout ce qui est posts et un autre pour tout ce qui est commentaires. Les fonctions sont regroupées proprement dans des classes.
 
-Disons qu'on vient de faire un premier pas... et c'est déjà pas mal ! On a un début de modèle objet. Eh, il faut savoir apprécier les petits progrès dans la vie.
+Disons qu'on vient de faire un premier pas... et c'est déjà pas mal ! On a un début de modèle objet. Eh, il faut savoir apprécier les petits progrès dans la vie .
