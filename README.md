@@ -24,3 +24,14 @@ Pourquoi ne pas nommer juste la classe "Post" ? Parce que, par convention, ça v
 
 La classe PostManager
 Le fichier qui contient la classe PostManager s'appelle model/PostManager.php.
+Les noms des classes commencent toujours par une majuscule. Leurs noms de fichiers aussi donc.
+
+Nous y regroupons toutes nos fonctions qui concernent les posts :
+Nous n'avons rien fait de spécial à part... regrouper nos fonctions dans une classe. Normalement, les classes sont plus riches (elles contiennent des variables membres), mais je voulais qu'on commence doucement. 😆
+
+Il y a une chose intéressante ici : j'ai choisi de rendre la fonction  dbConnect()  privée. Pourquoi ? Parce que personne n'est censé l'appeler depuis l'extérieur de la classe. C'est une fonction utilitaire qui ne sert qu'aux autres fonctions de la classe.
+Ligne 6 et 14, on l'appelle avec  $this->dbConnect()  (on utilise le préfixe  $this  pour faire référence aux fonctions membres de la classe). On est ici autorisé à appeler cette fonction privée puisqu'on est dans la classe. En revanche, on ne pourrait pas l'appeler depuis un autre fichier.
+
+ - La classe CommentManager
+Nous faisons la même chose pour la classe  CommentManager  , qui contient toutes les fonctions qui concernent les commentaires :
+
