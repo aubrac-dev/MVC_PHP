@@ -133,8 +133,10 @@ ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 
+
 CREATE USER 'dbuser'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO 'dbuser'@'localhost';
 FLUSH PRIVILEGES;
+
 
 
