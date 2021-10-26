@@ -25,3 +25,8 @@ Le contenu du commentaire
 
 Le reste des informations (l'ID du commentaire, la date) sera généré automatiquement.
 
+ - Écriture du contrôleur
+Le contrôleur  controller/frontend.php  récupère lui aussi les informations dont on a besoin (id du billet, auteur, commentaire) et les transmet au modèle :
+Vous noterez qu'on teste le retour de la requête. Normalement, celle-ci renvoie le nombre de lignes impactées par la requête ou "false" s'il y a eu une erreur. On teste donc s'il y a eu une erreur, et on arrête tout (avec un  die  ) si jamais il y a eu un souci.
+
+Si tout va bien, il n'y a aucune page à afficher. Les données ont été insérées, on redirige donc le visiteur vers la page du billet pour qu'il puisse voir son beau commentaire qui vient d'être inséré ! 

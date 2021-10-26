@@ -1,5 +1,5 @@
 <?php
-// controller/frontend.php The controller
+
 require('model/frontend.php');
 
 function listPosts()
@@ -15,4 +15,16 @@ function post()
     $comments = getComments($_GET['id']);
 
     require('view/frontend/postView.php');
+}
+
+function addComment($postId, $author, $comment)
+{
+    $affectedLines = postComment($postId, $author, $comment);
+
+    if ($affectedLines === false) {
+        die('Impossible d\'ajouter le commentaire !');
+    }
+    else {
+        header('Location: index.php?action=post&id=' . $postId);
+    }
 }
