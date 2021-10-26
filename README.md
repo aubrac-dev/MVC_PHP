@@ -1,83 +1,82 @@
 # MVC_PHP
 
-Tirer parti de l'héritage
+Utiliser les namespaces
 
-Vous vous souvenez de la fonction membre  dbConnect()  ? Nous avons dû la recopier à l'identique dans 2 classes différentes : PostManager et CommentManager. On a donc la même fonction dans 2 fichiers différents. Et vous savez ce que dit un développeur qui voit ça ? Il dit : 😵.
+Il y a quand même un nouveau concept que j'aimerais vous présenter...
 
-Nos 2 classes ont besoin d'une fonction commune. Comment leur faire partager cette fonction ? Avec l'héritage !
+Le rôle des namespaces
+De quoi va-t-on parler aujourd'hui ? Des espaces de nom (namespaces). Leur rôle ? Éviter les collisions de noms de classes.
 
-Utiliser l'héritage avec le modèle
-Concrètement, comment se servir de l'héritage dans la pratique ?
+Imaginez. Vous travaillez sur un gros programme. Vous réutilisez plusieurs bibliothèques. Vous pouvez être sûrs qu'à un moment donné, il va bien y avoir quelqu'un qui a eu l'idée saugrenue de créer une classe  CommentManager  ou  PostManager  tout comme vous ! À ce moment-là, c'est le plantage garanti : on n'a pas le droit d'appeler deux classes par le même nom...
 
-On va faire hériter nos classes PostManager et CommentManager d'une nouvelle classe nommée Manager. Cette classe va contenir la fonction de connexion à la base de données :
+... sauf si on utilise les namespaces bien sûr ! Ils agissent un peu comme des dossiers. Ils vous permettent d'avoir 2 classes du même nom dans votre programme, du temps qu'elles sont dans des namespaces différents :
 
-Vous pouvez voir que la fonction  dbConnect()  n'est ni  private  ni  public  , elle est...  protected . Pourquoi ?
-Si je l'avais laissée  private  , les fonctions filles dans   PostManager  et  CommentManager  n'auraient pas pu l'appeler. Le type  protected  est identique à  private  , mais il autorise quand même les classes filles à appeler la fonction. Juste ce qu'il nous faut !
+Utilisation des namespaces
+Concrètement, les namespaces ont cette forme :
 
-Nos classes PostManager et CommentManager doivent être mises à jour pour qu'elles héritent de Manager (on dit aussi qu'elles "l'étendent", car on utilise le mot-clé extends).
+Entreprise\Projet\Section
 
-Et... voilà ! Il n'y a rien de plus à changer. Les classes PostManager et CommentManager possèdent maintenant toutes les deux une fonction membre  dbConnect()  ... mais nous n'avons plus besoin de la recopier à l'infini. Le Comité contre la Pollution des Lignes de Code (CPLC) vous dit merci
+Ce sont vraiment comme des dossiers. Vous pouvez en imbriquer autant que vous voulez :
 
----------------------------------------------------------------------------------------------------------
+Entreprise\Projet\Section\SousSection\SousSousSection
 
-Le principe de l'héritage
-Une classe peut hériter d'une autre classe pour en récupérer toutes ses caractéristiques. Qu'est-ce que ça veut dire ?
+Dans la pratique, en général on commence par le nom de l'entreprise qui est responsable du projet, suivi du nom du projet. Vous pouvez mettre votre nom ou pseudonyme si vous n'avez pas d'entreprise.
 
-Imaginez 2 objets :
-
-Maison
-
-Appartement
-
-Ce sont tous les deux des logements. Il y a toujours une porte d'entrée à ouvrir et à fermer, une température qu'on veut pouvoir modifier, etc. Mais il y a aussi des différences : un appartement est situé à un étage précis, mais pas une maison par exemple.
-
-Le principe de l'héritage est de donner les caractéristiques d'un Logement (la classe parente) aux classes Maison et Appartement (les classes filles) :
-
-La Maison et l'Appartement sont des logements : ils héritent de Logement
-La Maison et l'Appartement sont des logements : ils héritent de Logement
-Du coup, on pourrait faire une classe Logement qui contiendrait les caractéristiques communes aux maisons et appartements :
+Pour définir un namespace, rien de plus simple. On va déclarer un  namespace  juste avant la définition de la classe :
 
 <?php
 
-class Logement
+namespace OpenClassrooms\Blog\Model; // La classe sera dans ce namespace
+
+require_once("model/Manager.php");
+
+class PostManager extends Manager
 {
-    private $porte;
-    private $temperature;
-
-    public function ouvrirPorte()
-    {
-        // ...
-    }
-
-    public function fermerPorte()
-    {
-        // ...
-    }
-
-    public function modifierTemperature($temperature)
-    {
-        // ...
-    }
+    // ...
 }
-Et on créerait ensuite des classes Maison et Appartement qui hériteraient de Logement toutes les deux. On utilise pour cela le mot-clé  extends  :
+Cela a un impact : tous les fichiers qui font appel à cette classe doivent maintenant ajouter le namespace en préfixe. Voilà par exemple à quoi va ressembler la fonction  post()  du contrôleur :
 
 <?php
-class Maison extends Logement
+
+require_once('model/PostManager.php');
+require_once('model/CommentManager.php');
+
+function post()
 {
-    // Cette classe comporte automatiquement les variables ($porte, $temperature...) et les fonctions (ouvrirPorte...) de la classe parente
+    $postManager = new \OpenClassrooms\Blog\Model\PostManager();
+    $commentManager = new \OpenClassrooms\Blog\Model\CommentManager();
+
+    // ...
 }
+Attention : en plaçant la classe Manager dans notre namespace, nous allons avoir un problème pour appeler PDO. En effet, PDO est une classe qui se trouve à la racine (dans le namespace global). Pour régler le problème, il faudra écrire \PDO (ligne 9) :
+
 <?php
-class Appartement extends Logement
+
+namespace OpenClassrooms\Blog\Model;
+
+class Manager
 {
-    // Cette classe comporte automatiquement les variables ($porte, $temperature...) et les fonctions (ouvrirPorte...) de la classe parente
-    
-    private $etage; // Seuls les appartements sont situés à un étage précis. On définit donc cette variable ici.
+    protected function dbConnect()
+    {
+        $db = new \PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root');
+        return $db;
+    }
 }
-Voilà le concept en quelques mots. Ça n'a l'air de rien, mais c'est un concept très puissant qui nous aide beaucoup en programmation objet. 🙂
+Eviter la répétition du préfixe
+Hum, ça me paraît quand même plus long à écrire tout ça. N'y a-t-il pas moyen d'éviter de répéter le namespace en préfixe à chaque fois ?
 
-Comment savoir si ça a du sens de faire un héritage ?
-On doit pouvoir dire "ClasseA est un ClasseB". Par exemple :
+Oui, c'est possible. Il faut utiliser le mot-clé  use  en début d'un fichier qui fait régulièrement appel à des classes d'un même namespace :
 
-"La Maison est un Logement" (donc Maison hérite de Logement)
+<?php
 
-"Le Chat est un Animal" (donc Chat hérite de Animal)
+use \OpenClassrooms\Blog\Model\PostManager;
+use \OpenClassrooms\Blog\Model\CommentManager;
+
+function post()
+{
+    $postManager = new PostManager();
+    $commentManager = new CommentManager();
+
+    // ...
+}
+Néanmoins, cela peut aussi porter à confusion si nous abusons de cette technique. Je vais donc éviter de faire appel à  use  mais au moins vous savez que ça existe au besoin.
