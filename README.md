@@ -37,3 +37,11 @@ Rien de spécial, c'est un formulaire quoi. 😅
 
 Il faut juste bien écrire l'URL vers laquelle le formulaire est censé envoyer. Ici, vous voyez que j'envoie vers une action addComment. Hum... ça me fait penser qu'on n'a pas encore écrit le routeur qui appelle le contrôleur ! 
 
+ - Mise à jour du routeur
+Bon on y est presque. Ajoutons un elseif dans notre routeur (  index.php  ) pour appeler le nouveau contrôleur  addComment  qu'on vient de créer, et on devrait avoir tout bon !
+
+Ouah ! Eh, il devient dur à lire ce routeur non ?
+
+C'est vrai qu'avec tous ces if imbriqués, ça commence à faire beaucoup... mais il n'y a pas trop le choix. Ceci dit, il y a une meilleure façon de gérer les erreurs, on va en reparler dans un prochain chapitre. 
+
+Comme vous pouvez le voir, je teste si on a bien un ID de billet, mais aussi si un nom d'auteur et un message ont bien été envoyés. Si c'est le cas, j'appelle le contrôleur  addComment  , qui appelle le modèle pour enregistrer les informations en base. Ah, c'est beau quand tout est bien organisé ! 
