@@ -30,3 +30,10 @@ Le contrôleur  controller/frontend.php  récupère lui aussi les informations d
 Vous noterez qu'on teste le retour de la requête. Normalement, celle-ci renvoie le nombre de lignes impactées par la requête ou "false" s'il y a eu une erreur. On teste donc s'il y a eu une erreur, et on arrête tout (avec un  die  ) si jamais il y a eu un souci.
 
 Si tout va bien, il n'y a aucune page à afficher. Les données ont été insérées, on redirige donc le visiteur vers la page du billet pour qu'il puisse voir son beau commentaire qui vient d'être inséré ! 
+
+ - Mise à jour de la vue
+Il faut aussi modifier un peu la vue qui affiche un billet et ses commentaires (  view/frontend/postView.php  ). En effet, nous devons ajouter le formulaire pour pouvoir envoyer des commentaires !
+Rien de spécial, c'est un formulaire quoi. 😅
+
+Il faut juste bien écrire l'URL vers laquelle le formulaire est censé envoyer. Ici, vous voyez que j'envoie vers une action addComment. Hum... ça me fait penser qu'on n'a pas encore écrit le routeur qui appelle le contrôleur ! 
+
