@@ -35,3 +35,19 @@ Ligne 6 et 14, on l'appelle avec  $this->dbConnect()  (on utilise le préfixe  $
  - La classe CommentManager
 Nous faisons la même chose pour la classe  CommentManager  , qui contient toutes les fonctions qui concernent les commentaires :
 
+ - Mise à jour du contrôleur
+Maintenant que nous avons créé des classes, il nous faut créer des objets à partir d'elles. Notre contrôleur doit être adapté car il ne doit plus appeler des fonctions mais des fonctions situées à l'intérieur d'objets (des fonctions membres).
+
+
+On doit charger les classes en premier (exactement comme on le faisait pour des fonctions). Le  require_once  nous permet de nous assurer qu'on ne charge pas la classe une seconde fois.
+
+Ensuite, on crée un objet à partir de cette classe lorsqu'on en a besoin (ex : ligne 9) et on appelle la fonction membre dont on a besoin à l'intérieur (ex : ligne 10).
+
+Je ne comprends pas l'intérêt ! On a compliqué pour rien non ?!
+C'était pas plus simple d'appeler directement une fonction comme avant ?
+
+Oui, c'est vrai, c'était plus simple avant. Là, on peut le dire, il y a encore assez peu d'intérêt (mais attendez de découvrir toute la puissance de l'objet 😏 ).
+
+Il y a au moins un intérêt en tout cas : on a mieux découpé notre code. Il y a un fichier pour tout ce qui est posts et un autre pour tout ce qui est commentaires. Les fonctions sont regroupées proprement dans des classes.
+
+Disons qu'on vient de faire un premier pas... et c'est déjà pas mal ! On a un début de modèle objet. Eh, il faut savoir apprécier les petits progrès dans la vie.
