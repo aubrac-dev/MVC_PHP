@@ -1,46 +1,26 @@
 # MVC_PHP
 
-Gérer les erreurs
-La gestion des erreurs est un sujet important en programmation. Il y a souvent des erreurs et il faut savoir vivre avec. Mais comment faire ça bien ? 🤔
+Passage du modèle en objet
 
-Si vous vous souvenez de notre routeur, il contient beaucoup de  if .On fait des tests et on affiche des erreurs à chaque fois qu'il y a un problème :
+! Nous allons faire quelque chose de modeste pour commencer : nous allons encapsuler le modèle dans une classe.
 
- - Les exceptions à la rescousse
-Les exceptions sont un moyen en programmation de gérer les erreurs. Vous en avez peut-être déjà vu dans du code PHP, ça ressemble à ça :
+Histoire de bien faire les choses, on va créer 2 classes car on peut considérer qu'on a 2 types d'objets différents :
 
-<?php
-try {
-    // Essayer de faire quelque chose
-}
-catch(Exception $e) {
-    // Si une erreur se produit, on arrive ici
-}
-En premier lieu, l'ordinateur essaie d'exécuter les instructions qui se trouvent dans le bloc  try  ("essayer" en anglais). Deux possibilités :
+PostManager  : un gestionnaire de post de blog
 
-Soit il ne se passe aucune erreur dans le bloc  try  : dans ce cas, on saute le bloc  catch  et on passe à la suite du code.
+CommentManager  : un gestionnaire de commentaire
 
-Soit une erreur se produit dans le bloc  try  : on arrête ce qu'on faisait et on va directement dans le  catch  (pour "attraper" l'erreur).
+On va donc avoir 2 fichiers :
 
-C'est par exemple ce qu'on fait ici pour se connecter à la base de données :
+model/PostManager.php
 
-<?php
+model/CommentManager.php
 
-// Code avant
+Pourquoi on parle de PostManager et pas juste de Post ?
 
-try {
-    $db = new PDO('mysql:host=localhost;dbname=test;charset=utf8', 'root', 'root');
-}
-catch(Exception $e) {
-    die('Erreur : '.$e->getMessage());
-}
+On appelle ces classes des "Managers" parce qu'elles vont nous aider à "manager" les posts et les commentaires. C'est leur rôle : effectuer des opérations de lecture et d'écriture sur les tables.
 
-// Code après
-On essaie de se connecter à la base de données dans le bloc  try . Si tout va bien, on continue (on va dans le "Code après"). Si en revanche il y a un souci lors de la connexion (à l'intérieur du  new PDO  ), alors on récupère l'erreur dans le bloc catch.
+Pourquoi ne pas nommer juste la classe "Post" ? Parce que, par convention, ça voudrait dire que l'objet représenterait un post issu de la base de données. Ça existe, ça se fait, mais ça nécessite de faire de l'hydratation, un sujet plus complexe qu'on ne verra pas ici. Je vous présenterai le concept dans le dernier chapitre si vous êtes curieux. 😉
 
-On peut afficher l'erreur qui nous a été envoyée avec  $e->getMessage()  .
-
-Pour générer une erreur, il faut "jeter une exception" (oui, on dit ça 😂 ). Dès qu'il y a une erreur quelque part dans votre code, dans une fonction par exemple, vous utiliserez cette ligne :
-
-<?php
-throw new Exception('Message d\'erreur à transmettre');
-On va utiliser ce mécanisme dans notre code !
+La classe PostManager
+Le fichier qui contient la classe PostManager s'appelle model/PostManager.php.
